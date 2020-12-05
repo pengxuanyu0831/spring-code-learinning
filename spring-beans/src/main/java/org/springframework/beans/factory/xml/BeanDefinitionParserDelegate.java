@@ -496,6 +496,7 @@ public class BeanDefinitionParserDelegate {
 	 * Parse the bean definition itself, without regard to name or aliases. May return
 	 * {@code null} if problems occurred during the parsing of the bean definition.
 	 */
+	// 元素的解析都在这个方法中
 	@Nullable
 	public AbstractBeanDefinition parseBeanDefinitionElement(
 			Element ele, String beanName, @Nullable BeanDefinition containingBean) {
@@ -512,11 +513,13 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
+			// 返回一个GenericBeanDefinition对象过来
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
-
+			// 解析bean标签的属性,把解析出来的属性设置到BeanDefinition对象中去
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
-
+			
+			// 解析meta标签
 			parseMetaElements(ele, bd);
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());

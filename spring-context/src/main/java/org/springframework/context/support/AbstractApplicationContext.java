@@ -241,6 +241,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private Set<ApplicationListener<?>> earlyApplicationListeners;
 
 	/** ApplicationEvents published before the multicaster setup. */
+
 	@Nullable
 	private Set<ApplicationEvent> earlyApplicationEvents;
 
@@ -1230,7 +1231,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Nullable
 	public Class<?> getType(String name) throws NoSuchBeanDefinitionException {
 		assertBeanFactoryActive();
-		return getBeanFactory().getType(name);
+		return ().getType(name);
 	}
 
 	@Override
