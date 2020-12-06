@@ -522,6 +522,8 @@ public class BeanDefinitionParserDelegate {
 			// 解析meta标签
 			parseMetaElements(ele, bd);
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+			// 希望增强某个方法，但是不想在原来的代码上修改就用这个 replace-method 标签
+			// 如果有方法重载？- 子标签：arg-type 指定类型即可
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
 			parseConstructorArgElements(ele, bd);
@@ -1417,6 +1419,7 @@ public class BeanDefinitionParserDelegate {
 		BeanDefinitionHolder finalDefinition = originalDef;
 
 		// Decorate based on custom attributes first.
+		// 通过属性来装饰BeanDefiniftionHolder
 		NamedNodeMap attributes = ele.getAttributes();
 		for (int i = 0; i < attributes.getLength(); i++) {
 			Node node = attributes.item(i);
@@ -1447,6 +1450,7 @@ public class BeanDefinitionParserDelegate {
 
 		String namespaceUri = getNamespaceURI(node);
 		if (namespaceUri != null && !isDefaultNamespace(namespaceUri)) {
+			// 自定义标签：在spring的一个配置文件里MEAT-INF/speing.handlers，解析对应的url,建立一个对应关系<map>
 			NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 			if (handler != null) {
 				BeanDefinitionHolder decorated =

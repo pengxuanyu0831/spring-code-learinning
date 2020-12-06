@@ -76,10 +76,17 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 
 	private static final String FILTER_EXPRESSION_ATTRIBUTE = "expression";
 
-
+    /*
+    扫描路径下.class 文件
+    判断类是否有注解：又一个metaData对象，类里所有的属性都会封装在这个meataData对象中
+	GenericBeanDefinition generic = new GenericBeanDefinition;
+	generic.setBeanClass(beanClass.class);
+	完成beanDefintion的注册
+     */
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		// 获取basePackage的基础属性
 		String basePackage = element.getAttribute(BASE_PACKAGE_ATTRIBUTE);
 		basePackage = parserContext.getReaderContext().getEnvironment().resolvePlaceholders(basePackage);
 		String[] basePackages = StringUtils.tokenizeToStringArray(basePackage,
@@ -87,6 +94,7 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 
 		// Actually scan for bean definitions and register them.
 		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
+		// 将扫描到的对象 注册成一个beanDefinition
 		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);
 		registerComponents(parserContext.getReaderContext(), beanDefinitions, element);
 
