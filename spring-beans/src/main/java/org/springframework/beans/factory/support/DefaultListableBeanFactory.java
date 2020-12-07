@@ -906,7 +906,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	protected boolean isBeanEligibleForMetadataCaching(String beanName) {
 		return (this.configurationFrozen || super.isBeanEligibleForMetadataCaching(beanName));
 	}
-
+	// !! 重点 ！！
 	@Override
 	public void preInstantiateSingletons() throws BeansException {
 		if (logger.isTraceEnabled()) {
@@ -919,7 +919,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
+			// 合并bean
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			// 如果不是抽象的、是单例的、不是懒加载的 才会实例化
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
